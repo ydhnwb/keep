@@ -300,7 +300,7 @@ export class InsertPage {
 
   deleteData(){
     this.loading = this.loadingCtrl.create({
-      content: 'Menghapus...',
+      content: 'Menghapus data....',
     });
     this.loading.present();
 
