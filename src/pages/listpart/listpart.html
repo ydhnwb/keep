@@ -1,0 +1,35 @@
+<!--
+  Generated template for the ListpartPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>List part</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+    <!-- <ion-list *ngFor="let i of data; let idx = index;">    
+        <ion-item>
+            <ion-label>{{i.nama_part}}</ion-label>
+            <ion-icon name="arrow-dropright" item-right></ion-icon>
+        </ion-item>
+    </ion-list>     -->
+    
+    <ion-card tappable *ngFor="let i of data; let index = index" (click)="intentEdit(i.id_part)">
+        <ion-card-header><h2><b>{{i.nama_part}}</b></h2></ion-card-header>
+        <ion-card-content>
+          <p>{{i.nama_perangkat}}</p>
+          <p><i>Area {{i.area}} <br> lokasi {{i.lokasi}}</i></p>
+          <div align="center">
+              <button ion-button block color="primary" (click) = "seeData(i.qrcode, $event)">Perangkat terkait</button>
+          </div>
+        </ion-card-content>
+    </ion-card>  
+
+</ion-content>

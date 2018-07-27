@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="card-background-page">
+  <ion-card style="max-height: 35%" (click)="presentActionSheet()">
+    <img src="assets/imgs/scan.jpeg">
+    <div class="card-title">Scan code</div>
+    <div class="card-subtitle">Pindai code QRCode untuk mulai  mendata</div>
+    <div class="filtered-background"></div>
+  </ion-card>
+  <ion-card style="max-height: 35%;" (click)="intentReview()">
+      <img src="assets/imgs/scan2.jpeg">
+      <div class="card-title">Review data</div>
+      <div class="card-subtitle">Lihat data atau perbarui data anda</div>
+      <div class="filtered-background"></div>
+  </ion-card> 
+  <ion-card style="max-height: 35%;" (click)="generateReport()">
+      <img src="assets/imgs/stats.jpg">
+      <div class="card-title">Report</div>
+      <div class="card-subtitle">Ambil laporan dari server</div>
+      <div class="filtered-background"></div>
+  </ion-card>
+    <!-- <button ion-button secondary menuToggle>Toggle Menu</button> -->
+
+</ion-content>
+<ion-footer>
+  <ion-fab bottom right>
+    <button ion-fab icon-only (click)="add()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+</ion-footer>
+

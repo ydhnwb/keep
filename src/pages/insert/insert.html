@@ -1,0 +1,69 @@
+<!--
+  Generated template for the InsertPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+        <div *ngIf="isUpdate === false">        
+            <ion-title>Perangkat baru</ion-title>
+        </div>      
+        <div *ngIf="isUpdate === true">        
+            <ion-title>Perbarui perangkat</ion-title>
+        </div>      
+    
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+        <div align="center">
+                <ion-avatar item-start>
+                        <img src="{{pathForImage(lastImage)}}" style="max-height: 50%" [hidden]="lastImage === null">
+                </ion-avatar>
+                <img [src]="host+data.imagepath" [hidden]="lastImage !== null"/>
+            <button ion-button icon-left (click)="presentActionSheet()">
+                <ion-icon name="camera"></ion-icon>Pilih gambar
+            </button>        
+        </div>
+    <ion-list>
+        <ion-item>
+        <ion-label floating>Nama perangkat</ion-label>
+        <ion-input type="text" [(ngModel)] = "data.nama" ></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Area</ion-label>
+        <ion-input type="text" [(ngModel)] = "data.area"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Lokasi</ion-label>
+        <ion-input type="text" [(ngModel)] = "data.lokasi" ></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Deskripsi</ion-label>
+        <ion-textarea rows="5" name="review" [(ngModel)]="data.deskripsi"></ion-textarea>
+    </ion-item>   
+</ion-list>
+
+</ion-content>
+<ion-footer>
+    <ion-toolbar>
+        <div align="right" *ngIf="isUpdate === false">        
+                <button ion-button full (click)="uploadImageTwo()" [disabled]="lastImage === null">Simpan</button>
+        </div>      
+        <div align="right" *ngIf="isUpdate === true">
+                <ion-row>
+                    <ion-col no-padding>
+                      <button ion-button block color="danger" (click) = "presentConfirm()">Hapus</button>
+                    </ion-col>
+                    <ion-col no-padding>
+                      <button ion-button block color="secondary" (click) = "uploadImageTwo()">Perbarui</button>
+                    </ion-col>
+                </ion-row>  
+          </div>       
+        </ion-toolbar>
+        
+</ion-footer>
