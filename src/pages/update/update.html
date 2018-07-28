@@ -19,7 +19,7 @@
         <button ion-button round style="margin: 3%;" color="primary" (click) = "intentPart()">Tambah part</button>
     </div> 
   <ion-list *ngFor="let i of data; let idx = index;">
-    <ion-item>
+    <ion-item (click)="intentUpdate(i.id_part)">
       <ion-label>{{i.nama_part}}</ion-label>
         <ion-toggle [(ngModel)] ="i.status"></ion-toggle>
     </ion-item>

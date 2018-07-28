@@ -11,8 +11,6 @@ import { DataserviceProvider } from '../../providers/dataservice/dataservice';
 export class ListPage {
   selectedItem: any;
   icons: string[];
-  items: Array<{title: string, note: string, icon: string}>;
-  
   kategori : any = [];
   header:any = {};
   options : BarcodeScannerOptions;
@@ -28,7 +26,6 @@ export class ListPage {
                 this.selectedItem = navParams.get('item');
 
   }
-
 
   ionViewDidLoad(){
     this.getDataKategori();
@@ -58,14 +55,6 @@ export class ListPage {
 
   }
 
-  itemTapped(event, item) {
-    // That's right, we're pushing to ourselves!
-    this.navCtrl.push(ListPage, {
-      item: item
-    });
-  }
-
-
   getChildrenOfCategory(value){
     this.header['Cache-Control'] = 'no-cache';
     this.http.clearCookies();
@@ -73,7 +62,6 @@ export class ListPage {
         .then(res => {
             this.zone.run(() => {
             this.part = JSON.parse(res.data);
-            //console.log(this.data);
             });
         }).catch(e => {
             console.log("Get All Data : " + e.message);

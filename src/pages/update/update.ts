@@ -77,7 +77,6 @@ export class UpdatePage {
     }, 400)    
   }
 
-
   insertNewRecordOfData(){
     this.loading = this.loadingCtrl.create({
       content: 'Menyimpan..',
@@ -98,6 +97,10 @@ export class UpdatePage {
       });
   } 
   
-  
+  intentUpdate(id_part){
+    this.navCtrl.push('PartPage', {id : id_part,isUpdate : true});
+  }
+
+
 
 }

@@ -255,6 +255,7 @@ export class InsertPage {
     }
   }
 
+  
   public uploadImageTwo() {
     if(this.checker()){
       if(this.lastImage == null || typeof this.lastImage === 'undefined'){

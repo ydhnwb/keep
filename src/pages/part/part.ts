@@ -158,7 +158,6 @@ export class PartPage {
       content: 'Menghapus part...',
     });
     this.loading.present();
-
     this.http.post(this.dataserv.mHost+'delete.php', {id :this.data.id , target : 'part'}, this.header)
     .then(( res => {
       try{

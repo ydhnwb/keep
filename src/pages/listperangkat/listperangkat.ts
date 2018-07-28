@@ -47,7 +47,6 @@ export class ListperangkatPage {
         .then(res => {
             this.zone.run(() => {
             this.data = JSON.parse(res.data);
-            //console.log(this.data);
             });
         }).catch(e => {
             console.log("Get All Data : " + e.message);
@@ -65,7 +64,7 @@ export class ListperangkatPage {
   }
 
   seeData(qrcode, e){
-    e.preventDefault(); // use this to prevent default event behavior
+    e.preventDefault();
     e.stopPropagation();
     this.navCtrl.push('UpdatePage',{scanned : qrcode.toLowerCase()});
   }
@@ -73,7 +72,4 @@ export class ListperangkatPage {
   intentEdit(id_perangkat){
     this.navCtrl.push('InsertPage', {scanned : id_perangkat.toLowerCase(),isUpdate : true});
   }
-
-
-
 }

@@ -75,7 +75,6 @@ export class HomePage {
       this.checkDataInDB('checker.php', this.scannedData.text);
       this.scannedData = '';
     }
-
     this.scannedData.text = '';
     }, (err) => {
       this.scannedData = '';
@@ -141,13 +140,10 @@ export class HomePage {
         {
           text: 'OKE',
           handler: data => {
-            
             if (data.qrCode != '') {
               this.checkDataInDB('checker.php', data.qrCode.toLowerCase());
               return true;
-              //this.navCtrl.push('InsertPage',{scanned : name});
             } else {
-              // invalid login
               return false;
             }
           }
@@ -164,8 +160,8 @@ export class HomePage {
     this.loading.present();
     let path = null;
     if(this.platform.is('ios')){
-      //path = this.file.externalRootDirectory; not tested
-      path = this.file.documentsDirectory; //also not tested
+      path = this.file.externalRootDirectory; //not tested
+      //path = this.file.documentsDirectory; //also not tested
       
     }else{
       //path = this.file.documentsDirectory; tested and not work
@@ -190,8 +186,5 @@ export class HomePage {
         console.log(e);
     });
     return data;
-
-
-
   }
 }

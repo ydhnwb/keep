@@ -21,7 +21,6 @@ export class ListpartPage {
   header : any = {};
   data : any = [];
 
-
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl : AlertController,
               public dataservice : DataserviceProvider, public http : HTTP, public zone : NgZone) {
                 this.ctx = this.navParams.get('ctx');
@@ -56,19 +55,14 @@ export class ListpartPage {
             this.showAlert('Terjadi kesalahan', e.message);
         });
   }
-
-
-  intentEdit(id_part){
+  
+  intentEdit(id_part){ 
     this.navCtrl.push('PartPage', {id : id_part,isUpdate : true});
   }
 
   seeData(qrcode, e){
-    e.preventDefault(); // use this to prevent default event behavior
+    e.preventDefault();
     e.stopPropagation();
     this.navCtrl.push('UpdatePage',{scanned : qrcode.toLowerCase()});
   }
-
-  
-
-
 }
