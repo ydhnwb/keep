@@ -91,7 +91,7 @@ export class HomePage {
   }
 
   intentReview(){
-    this.navCtrl.push("ListperangkatPage");
+    this.navCtrl.push("ListperangkatPage", {isFiltering : false});
   }
 
   intentPart(){
@@ -104,7 +104,7 @@ export class HomePage {
       try{
         this.data = JSON.parse(res.data);
         if(this.data.message !== "0"){
-          this.navCtrl.push('UpdatePage',{scanned : scannedText.toLowerCase()});
+          this.navCtrl.push('UpdatePage',{scanned : scannedText.toLowerCase(), isUpdate : true});
         }else{
           this.showAlert('Wait...', 'Tidak ada perangkat dengan QRCode yang anda scan, anda perlu menginput datanya terlebih dahulu.');
           this.navCtrl.push('InsertPage',{scanned : scannedText.toLowerCase(),isUpdate : false}); 

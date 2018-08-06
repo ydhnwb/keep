@@ -21,7 +21,11 @@ export class ListperangkatPage {
   toaster: any;
   loading: Loading;
   host : string;
-
+  isFiltering = false;
+  id_area : string = '';
+  id_lokasi : string = '';
+  nama_area : string = '';
+  nama_lokasi : string = '';
   constructor(public navCtrl: NavController, public navParams: NavParams, private http : HTTP,
               private alertCtrl : AlertController, public dataService: DataserviceProvider, 
               private zone : NgZone, public toastCtrl : ToastController, public loadingCtrl : LoadingController) {
@@ -30,6 +34,13 @@ export class ListperangkatPage {
                   position: 'bottom'
                 });
                 this.host = dataService.uploads;
+                this.isFiltering = navParams.get('isFiltering');
+                if(this.isFiltering){
+                  this.id_area = navParams.get('id_area');
+                  this.id_lokasi = navParams.get('id_lokasi');
+                  this.nama_area = navParams.get('nama_area');
+                  this.nama_lokasi = navParams.get('nama_lokasi');
+                }
   }
 
   ionViewDidLoad() {
@@ -37,12 +48,26 @@ export class ListperangkatPage {
   }
 
   ionViewDidEnter(){
-    this.getAllData();
+    if(this.isFiltering){
+      this.getFilteredData();
+    }else{
+      this.getAllData();
+    }
+  }
+
+  getFilteredData(){
+    this.http.post(this.dataService.mHost+'getfilteredperangkat.php', {id_area : this.id_area, id_lokasi : this.id_lokasi}, this.header)
+        .then(res => {
+            this.zone.run(() => {
+            this.data = JSON.parse(res.data);
+            });
+        }).catch(e => {
+            console.log("Get All Data : " + e.message);
+            this.showAlert('Terjadi kesalahan', e.message);
+        });
   }
 
   getAllData(){
-    this.header['Cache-Control'] = 'no-cache';
-    this.http.clearCookies();
     this.http.get(this.dataService.mHost+'getperangkat.php', {}, this.header)
         .then(res => {
             this.zone.run(() => {

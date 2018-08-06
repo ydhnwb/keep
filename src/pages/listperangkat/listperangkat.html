@@ -14,7 +14,7 @@
 
 <ion-content>
   <ion-card tappable *ngFor="let i of data; let index = index" (click)="intentEdit(i.qrcode)">
-    <img style="max-height: 50%" [src]="host+i.imagepath"/>
+    <!-- <img style="max-height: 50%" [src]="host+i.imagepath"/> -->
     <ion-card-header><h2><b>{{i.nama}}</b></h2></ion-card-header>
     <ion-card-content>
       <p>{{i.area}}</p>
@@ -27,3 +27,14 @@
   </ion-card>
 
 </ion-content>
+<ion-footer>
+    <div *ngIf="isFiltering === true">
+        <ion-toolbar>
+          <div align="center">
+            <p>{{nama_area}} >> {{nama_lokasi}}</p>
+          </div>
+        </ion-toolbar>
+    </div>
+    
+  </ion-footer>
+  

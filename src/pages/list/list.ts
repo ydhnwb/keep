@@ -52,7 +52,6 @@ export class ListPage {
             console.log("getDataKategori : " + e.message);
             this.showAlert('Terjadi kesalahan', e.message);
         });
-
   }
 
   getChildrenOfCategory(value){

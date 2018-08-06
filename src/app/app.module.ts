@@ -17,22 +17,29 @@ import { FilePath } from '@ionic-native/file-path';
 import { Transfer } from '@ionic-native/transfer';
 import { Camera } from '@ionic-native/camera';
 import { DocumentViewer } from '@ionic-native/document-viewer';
+import { ListareaPage } from '../pages/listarea/listarea';
+
+
+import { IonicImageViewerModule } from 'ionic-img-viewer';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    ListPage
+    ListPage,
+    ListareaPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    IonicImageViewerModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
-    ListPage
+    ListPage,
+    ListareaPage
   ],
   providers: [
     StatusBar,

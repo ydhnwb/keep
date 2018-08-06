@@ -5,33 +5,23 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar>
     <ion-title>Status part</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content>
-
     <div align="right">        
         <button ion-button round style="margin: 3%;" color="primary" (click) = "intentPart()">Tambah part</button>
+        <button ion-button icon-only round color="light" (click)="intentEdit()"><ion-icon name="create"></ion-icon></button>
     </div> 
   <ion-list *ngFor="let i of data; let idx = index;">
     <ion-item (click)="intentUpdate(i.id_part)">
       <ion-label>{{i.nama_part}}</ion-label>
         <ion-toggle [(ngModel)] ="i.status"></ion-toggle>
     </ion-item>
-    <!-- <ion-card-header><h2><b>{{i.nama_part}}</b></h2></ion-card-header>
-    <ion-card-content>
-      <p>Kondisi {{i.nama_part}} : {{i.status}}</p>  
-    </ion-card-content> 
-   -->
-
   </ion-list>
 </ion-content>
-
 
 <ion-footer>
   <button ion-button block color="secondary" (click)="insertNewRecordOfData()">Simpan data</button>

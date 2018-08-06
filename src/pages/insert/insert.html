@@ -20,28 +20,77 @@
 
 
 <ion-content>
-        <div align="center">
-                <ion-avatar item-start>
+        <div align="center" *ngIf="isUpdate === false">
+                <!-- <ion-avatar item-start>
                         <img src="{{pathForImage(lastImage)}}" style="max-height: 50%" [hidden]="lastImage === null">
                 </ion-avatar>
-                <img [src]="host+data.imagepath" [hidden]="lastImage !== null"/>
-            <button ion-button icon-left (click)="presentActionSheet()">
+                <img [src]="host+data.imagepath" [hidden]="lastImage !== null"/> -->
+            <button ion-button icon-left (click)="presentActionSheet()" [hidden]="lastImage.length === 4">
                 <ion-icon name="camera"></ion-icon>Pilih gambar
-            </button>        
+            </button>            
         </div>
+        <div align="center" *ngIf="isUpdate === true">
+            <!-- <ion-avatar item-start>
+                    <img src="{{pathForImage(lastImage)}}" style="max-height: 50%" [hidden]="lastImage === null">
+            </ion-avatar>
+            <img [src]="host+data.imagepath" [hidden]="lastImage !== null"/> -->
+        <button ion-button icon-left (click)="intentShowPhoto(data.qrcode)">
+            <ion-icon name="eye"></ion-icon>Foto perangkat ini
+        </button>
+        </div>
+
+
+        <ion-grid *ngIf="isUpdate === false">
+            <ion-row>
+                <ion-col col-6 *ngFor="let images of lastImage; let id = index">
+                    <ion-card class="block">
+                        <ion-icon name="close-circle" class="deleteIcon" (click)="deletePhoto(id, id)">
+                        </ion-icon>
+                        <img [src]="pathForImage(images)"/>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+        <ion-grid *ngIf="isUpdate === true">
+            <ion-row>
+                <ion-col col-6 *ngFor="let images of lastImage; let idx = index">
+                    <ion-card class="block">
+                        <ion-icon name="close-circle" class="deleteIcon" (click)="deletePhoto(idx, idx)">
+                        </ion-icon>
+                            <img [src]="pathForImage(images)"/>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+        </ion-grid>    
+
+        <!-- <div *ngIf="isUpdate === true">
+            <ion-slides class="image-slider" loop="true">
+                <ion-slide *ngFor="let img of images">
+                  <img [src]="host+img.image_uri" class="thumb-img" imageViewer/>
+                </ion-slide>
+            </ion-slides>
+        </div> -->
+
     <ion-list>
         <ion-item>
         <ion-label floating>Nama perangkat</ion-label>
         <ion-input type="text" [(ngModel)] = "data.nama" ></ion-input>
     </ion-item>
     <ion-item>
-        <ion-label floating>Area</ion-label>
-        <ion-input type="text" [(ngModel)] = "data.area"></ion-input>
-    </ion-item>
-    <ion-item>
-        <ion-label floating>Lokasi</ion-label>
-        <ion-input type="text" [(ngModel)] = "data.lokasi" ></ion-input>
-    </ion-item>
+        <ion-label>Area</ion-label>
+        <ion-select [(ngModel)]="data.area">
+            <ion-option *ngFor="let a of area" [value] = "a.id">{{a.area}}</ion-option>
+        </ion-select>  
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Lokasi</ion-label>
+        <ion-select [(ngModel)]="data.lokasi">
+            <ion-option *ngFor="let l of lokasi" [value] = "l.id">{{l.lokasi}}</ion-option>
+        </ion-select>  
+      </ion-item>
+
     <ion-item>
         <ion-label floating>Deskripsi</ion-label>
         <ion-textarea rows="5" name="review" [(ngModel)]="data.deskripsi"></ion-textarea>
@@ -52,7 +101,7 @@
 <ion-footer>
     <ion-toolbar>
         <div align="right" *ngIf="isUpdate === false">        
-                <button ion-button full (click)="uploadImageTwo()" [disabled]="lastImage === null">Simpan</button>
+                <button ion-button full (click)="uploadImageTwo()" [disabled]="lastImage.length === 0">Simpan</button>
         </div>      
         <div align="right" *ngIf="isUpdate === true">
                 <ion-row>

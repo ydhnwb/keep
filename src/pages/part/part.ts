@@ -137,8 +137,6 @@ export class PartPage {
   }
 
   getProp(){
-    this.header['Cache-Control'] = 'no-cache';
-    this.http.clearCookies();
     this.http.post(this.dataserv.mHost+'getpart.php', {id : this.data.id}, this.header)
         .then(res => {
         try {

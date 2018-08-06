@@ -25,7 +25,7 @@
         <ion-card-header><h2><b>{{i.nama_part}}</b></h2></ion-card-header>
         <ion-card-content>
           <p>{{i.nama_perangkat}}</p>
-          <p><i>Area {{i.area}} <br> lokasi {{i.lokasi}}</i></p>
+          <p><i>{{i.nama_area}} <br>{{i.nama_lokasi}}</i></p>
           <div align="center">
               <button ion-button block color="primary" (click) = "seeData(i.qrcode, $event)">Perangkat terkait</button>
           </div>

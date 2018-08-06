@@ -42,9 +42,15 @@ export class InsertPage {
   scannedData : '';
   loading: Loading;
   toaster: any;
-  lastImage: string = null;
+  lastImage: any = [];
+  listOfImageUri: any = [];
   isUpdate: false;
   host : string;
+  area : any = [];
+  lokasi : any [];
+
+  images : any = [];
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private http : HTTP,
               public loadingController : LoadingController, public actionSheetCtrl: ActionSheetController,
               public loadingCtrl: LoadingController, private alertCtrl : AlertController, public dataserv : DataserviceProvider,
@@ -67,11 +73,21 @@ export class InsertPage {
   }
 
   ionViewDidEnter(){
-    if(this.data.qrcode == ''){
-      this.getRandomQrCode();
+    if(this.isUpdate === false){
+      if(this.data.qrcode == ''){
+        this.getRandomQrCode();
+        }
+        this.getArea();
+        this.getLokasi();
     }
     if(this.isUpdate){
+      this.getArea();
+      this.getLokasi();
       this.getProp();
+      while(this.images.length > 0){
+        this.images.pop();
+      }
+      this.getImages();
     }
   }
 
@@ -86,7 +102,31 @@ export class InsertPage {
   checker(){
     return this.data.nama != '' && this.data.deskripsi != '' && this.data.area != '' && this.data.lokasi != '';
   }
+
+  getArea(){
+    this.http.get(this.dataserv.mHost+'getarea.php', {}, this.header)
+    .then(res => {
+        this.zone.run(() => {
+        this.area = JSON.parse(res.data);
+        });
+    }).catch(e => {
+        console.log(e);
+        this.showAlert('getarea', e.message);
+    });
+  }
   
+  getLokasi(){
+    this.http.get(this.dataserv.mHost+'getlokasi.php', {}, this.header)
+    .then(res => {
+        this.zone.run(() => {
+        this.lokasi = JSON.parse(res.data);
+        });
+    }).catch(e => {
+        console.log(e);
+        this.showAlert('getlokasi', e.message);
+    });
+  }
+
   showAlert(alertTitle : string, messageAlert : string){
     const alert = this.alertCtrl.create({
       title: alertTitle,
@@ -108,18 +148,48 @@ export class InsertPage {
         try{
           data = JSON.parse(result.data);
           this.loading.dismissAll();
-          //this.toaster.setMessage("Data anda berhasil disimpan");
+          this.toaster.setMessage("Data anda berhasil disimpan");
           this.toaster.present();
-          this.clearAll();
+          //this.clearAll();
           this.finish();        
           this.encode(data.message);
-          
         }catch(e){
           this.loading.dismissAll();
           console.log(e);
           this.showAlert('Eksepsi', "Kode error : " +e);
         }
       });
+  }
+
+  deletePhoto(id, index) {
+    let confirm = this.alertCtrl.create({
+      title: "Hapus",
+      message: "Apakah anda yakin ingin menghapus foto ini?",
+      buttons: [
+        {
+          text: "Batal",
+          handler: () => {
+            console.log("Disagree clicked");
+          }
+        },
+        {
+          text: "Hapus",
+          handler: () => {
+            console.log("Agree clicked");
+            if(this.isUpdate){
+              
+            }else{
+              this.lastImage.splice(index, 1);
+            }
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  intentShowPhoto(qrcode){
+    this.navCtrl.push('ListphotoPage',{qrcode : qrcode, nama_perangkat : this.data.nama});
   }
 
   encode(encoded){
@@ -162,7 +232,7 @@ export class InsertPage {
   getProp(){
     this.header['Cache-Control'] = 'no-cache';
     this.http.clearCookies();
-    this.http.post(this.dataserv.mHost+'perangkatprop.php', this.data, this.header)
+    this.http.post(this.dataserv.mHost+'perangkatprop.php', {qrcode : this.data.qrcode}, this.header)
         .then(res => {
         try {
             this.data = JSON.parse(res.data)[0];
@@ -189,7 +259,7 @@ export class InsertPage {
           this.loading.dismissAll();
           this.toaster.setMessage(data.message);
           this.toaster.present();
-          this.clearAll();        
+          //this.clearAll();  
           this.finish();
         }catch(e){
           this.loading.dismissAll();
@@ -240,7 +310,7 @@ export class InsertPage {
 
   private copyFileToLocalDir(namePath, currentName, newFileName) {
     this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
-      this.lastImage = newFileName;
+      this.lastImage.push(newFileName);
     }, error => {
       this.toaster.setMessage(error.message);
       this.toaster.present();
@@ -258,42 +328,62 @@ export class InsertPage {
   
   public uploadImageTwo() {
     if(this.checker()){
-      if(this.lastImage == null || typeof this.lastImage === 'undefined'){
+      if(this.lastImage.length === 0){
           this.updateData();
       }else{
-        var targetPath = this.pathForImage(this.lastImage);
-        var filename = this.lastImage;   
-        var options = {
-          fileKey: "file",
-          fileName: filename,
-          chunkedMode: false,
-          mimeType: "multipart/form-data",
-          params : {'fileName': filename}
-        };
-        const fileTransfer: TransferObject = this.transfer.create();
         this.loading = this.loadingCtrl.create({
-          content: 'Uploading...',
+          content: 'Tunggu sebentar...',
         });
         this.loading.present();
-       
+        var targetPath : any =[];
+        for (var i = 0; i < this.lastImage.length; i++) {
+          targetPath = this.pathForImage(this.lastImage[i]);
+          var filename = this.lastImage[i];
+          var options = {
+            fileKey: "file",
+            fileName: filename,
+            chunkedMode: false,
+            mimeType: "multipart/form-data",
+            params : {'fileName': filename}
+          };
+          
+        const fileTransfer: TransferObject = this.transfer.create();
         fileTransfer.upload(targetPath, this.dataserv.mHost+'imageuploader.php', options).then(data => {
           this.loading.dismissAll()
           let s = data.response;
-          this.data.imagepath = s;
-          if(this.isUpdate){
-            this.updateData();
-          }else{
-            this.saveData();
-          }
+          this.toaster.setMessage(s);
+          this.toaster.present();
+          this.listOfImageUri.push(s);
+          this.http.post(this.dataserv.mHost+'imagepusher.php', {image_id : this.data.qrcode, image_uri : s}, this.header)
+          .then( result => {
+            try{
+              this.toaster.setMessage(this.listOfImageUri[i]);
+              this.toaster.present();
+              let t = JSON.parse(result.data);
+              this.toaster.setMessage(t.message);
+              this.toaster.present();
+            }catch(e){
+              console.log(e);
+              this.showAlert('pushImage',e);
+            }
+          });          
         }, err => {
           this.showAlert('Error update', err.message);
           console.log(err.message);
           this.loading.dismissAll();
           this.toaster.setMessage("gagal mengupload foto");
           this.toaster.present();
-        
         });
       }
+      this.loading.dismissAll();      
+      this.data.imagepath = this.data.qrcode;
+        if(this.isUpdate){
+           this.updateData();
+        }else{
+           this.saveData();
+       }
+      
+    }
   
     }
 
@@ -366,5 +456,20 @@ export class InsertPage {
       ]
     });
     alert.present();
+  }
+
+  getImages(){
+    this.http.post(this.dataserv.mHost+'getimages.php', {image_id : this.data.qrcode}, this.header)
+        .then(res => {
+        try {
+            this.images = JSON.parse(res.data);
+        }catch(e) {
+            console.error('JSON parsing error '+ e.message);
+            this.showAlert('Exception', e.message);
+        }
+        }).catch(e => {
+            console.log("getImages : " + e.message);
+            this.showAlert('Get images', e.message);
+        });
   }
 }

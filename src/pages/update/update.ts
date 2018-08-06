@@ -74,7 +74,7 @@ export class UpdatePage {
   finish(){
     setTimeout( () =>{
       this.navCtrl.pop();
-    }, 400)    
+    }, 300)    
   }
 
   insertNewRecordOfData(){
@@ -82,13 +82,13 @@ export class UpdatePage {
       content: 'Menyimpan..',
     });
     this.loading.present();
-
-      this.http.post(this.dataService.mHost+'detail.php', {data : this.data}, this.header)
+    this.http.post(this.dataService.mHost+'detail.php', {data : this.data} , this.header)
       .then( result => {
         try{
-          this.toaster.setMessage('Disimpan');
-          this.toaster.present();          
-        }catch(e){
+          //var data = JSON.parse(result.data);
+          this.toaster.setMessage("Disimpan");
+          this.toaster.present();
+          }catch(e){
           console.log(e.message);
           this.showAlert('Oops', e.message);
         }
@@ -100,7 +100,7 @@ export class UpdatePage {
   intentUpdate(id_part){
     this.navCtrl.push('PartPage', {id : id_part,isUpdate : true});
   }
-
-
-
+  intentEdit(){
+    this.navCtrl.push('InsertPage', {scanned : this.scannedData,isUpdate : true});
+  }
 }
